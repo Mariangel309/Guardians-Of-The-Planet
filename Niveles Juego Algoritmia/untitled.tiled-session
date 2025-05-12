@@ -1,0 +1,107 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "/Users/martin/MiPrimerJuegoPygame/Niveles Juego Algoritmia/Selva.tmx",
+    "automapping.whileDrawing": true,
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "/Users/martin/MiPrimerJuegoPygame /Selva.tmx": {
+            "scale": 0.87,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 250.57471264367814,
+                "y": -224.71264367816093
+            }
+        },
+        "/Users/martin/MiPrimerJuegoPygame /Selvatileset.tsx": {
+            "scaleInDock": 1
+        },
+        "/Users/martin/MiPrimerJuegoPygame/Niveles Juego Algoritmia/Selva.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 240,
+                "y": -381.5
+            }
+        },
+        "/Users/martin/MiPrimerJuegoPygame/Niveles Juego Algoritmia/Selvatileset.tsx": {
+            "scaleInDock": 1
+        },
+        "/Users/martin/MiPrimerJuegoPygame/Selva copy.tmx": {
+            "scale": 0.9914,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 97.84143635263266,
+                "y": 715.1502925156344
+            }
+        },
+        "/Users/martin/MiPrimerJuegoPygame/Selva.tmx": {
+            "scale": 0.9675,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 232.5581395348837,
+                "y": 1814.987080103359
+            }
+        },
+        "/Users/martin/MiPrimerJuegoPygame/Selvatileset.tsx": {
+            "scaleInDock": 1
+        },
+        "ESPECIAL.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 2.81
+        },
+        "Nivel selva completo .tmx": {
+            "scale": 1.253,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 140.46288906624105,
+                "y": 1666.7996807661614
+            }
+        },
+        "Selva.tmx": {
+            "scale": 0.9024,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 279.2553191489362,
+                "y": 1700.4654255319151
+            }
+        },
+        "Selvatileset.tsx": {
+            "scaleInDock": 2.7752,
+            "scaleInEditor": 2.81
+        },
+        "selvatiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 2.42
+        }
+    },
+    "last.imagePath": "/Users/martin/Niveles Juego Algoritmia",
+    "map.height": 150,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 40,
+    "openFiles": [
+        "/Users/martin/MiPrimerJuegoPygame/Niveles Juego Algoritmia/Selva.tmx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "Selva.tmx",
+        "/Users/martin/MiPrimerJuegoPygame/Niveles Juego Algoritmia/Selva.tmx",
+        "Selvatileset.tsx",
+        "/Users/martin/MiPrimerJuegoPygame/Selva copy.tmx",
+        "/Users/martin/MiPrimerJuegoPygame/Selva.tmx",
+        "/Users/martin/MiPrimerJuegoPygame /Selva.tmx",
+        "Nivel selva completo .tmx",
+        "ESPECIAL.tsx",
+        "selvatiles.tsx"
+    ],
+    "resizeMap.removeObjects": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    }
+}
