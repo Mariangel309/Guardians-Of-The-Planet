@@ -13,8 +13,6 @@ class Game:
 
         self.screen = pygame.display.set_mode((640, 480)) #Creación de la ventana del juego con dimensiones (ancho, alto)
 
-        
-
         self.clock = pygame.time.Clock() #Esta es una herramienta que se usa para controlar la velocidad del juego, i.e. cuantas veces por segundo se actualiza la pantalla (frames per second FPS)
         
         self.movement = [False, False]
@@ -23,7 +21,7 @@ class Game:
             'player': load_image('entities/player.png')
         }
 
-        self.player = PhysicsEntity(self, 'player', (50, 50), (23, 39))
+        self.player = PhysicsEntity(self, 'player', (50, 50), (16, 26))
 
     def run(self):
         while True: #Este es un bucle infinito que se repite una y otra vez, esto para actualizar y dibujar todo
@@ -48,7 +46,6 @@ class Game:
                         self.movement[0] = False
                     if event.key == pygame.K_RIGHT:
                         self.movement[1] = False
-
             
             pygame.display.update()
             self.clock.tick(60)  #60 repeticiones por segundo

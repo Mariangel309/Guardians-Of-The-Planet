@@ -1,5 +1,7 @@
 import pygame
 
+import pygame
+
 class PhysicsEntity:
     def __init__(self, game, e_type, pos, size):
         self.game = game
