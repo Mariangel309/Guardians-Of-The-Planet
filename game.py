@@ -1,7 +1,7 @@
 import sys
 import pygame
 
-from scripts.utils import load_image
+from scripts.utils import load_image, load_images
 from scripts.entities import PhysicsEntity
 
 class Game:
@@ -18,6 +18,10 @@ class Game:
         self.movement = [False, False]
 
         self.assets = {
+            'decor': load_images('tiles/decor'), 
+            'decor': load_images('tiles/decor'),
+            'decor': load_images('tiles/decor'),
+            'decor': load_images('tiles/decor'),
             'player': load_image('entities/player.png')
         }
 
