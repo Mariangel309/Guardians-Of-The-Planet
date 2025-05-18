@@ -142,7 +142,7 @@ class Game:
                     pygame.mixer.music.stop()
                     return
                 if store_button.is_clicked(event):
-                    print("Abrir tienda")
+                    self.tienda_menu()
                 if credits_button.is_clicked(event):
                     print("Mostrar créditos")
                 if quit_button.is_clicked(event):
@@ -230,6 +230,42 @@ class Game:
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
             self.clock.tick(60)
+    def tienda_menu(self):
+            volver_img = pygame.transform.scale(
+                pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
+            volver = Button(195, 310, 250, 80)
+
+            # Texto de ejemplo para los productos
+            skins = [
+                {"nombre": "Ninja Verde", "pos": (100, 100)},
+                {"nombre": "Ninja Azul", "pos": (400, 100)},
+                {"nombre": "Ninja Naranja", "pos": (100, 220)},
+                {"nombre": "Ninja Original", "pos": (400, 220)},
+            ]
+
+            while True:
+                self.screen.blit(self.menu_assets['background'], (0, 0))
+
+                titulo = self.font.render("TIENDA", True, (255, 255, 255))
+                self.screen.blit(titulo, (240, 30))
+
+                # Dibujar skins (nombre solamente por ahora faltan las skins)
+                for producto in skins:
+                    texto = self.font.render(producto["nombre"], True, (240, 180, 35))
+                    self.screen.blit(texto, producto["pos"])
+
+                self.screen.blit(volver_img, (170, 250))  # Imagen del botón volver
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if volver.is_clicked(event):
+                        return
+
+                pygame.display.update()
+                self.clock.tick(60)
+
 
 
 if __name__ == '__main__':
