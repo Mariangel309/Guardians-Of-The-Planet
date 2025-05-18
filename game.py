@@ -31,7 +31,7 @@ class Game:
         pygame.mixer.music.set_volume(self.volume)
 
 
-        pygame.display.set_caption('Ninja Game')
+        pygame.display.set_caption('Guardians Of The Planet')
         self.screen = pygame.display.set_mode((640, 480))
         self.display = pygame.Surface((320, 240))
 
@@ -93,6 +93,7 @@ class Game:
         self.player = Player(self, (50, 50), (8, 15))
         
         self.tilemap = Tilemap(self, tile_size=16)
+        self.tilemap.load('map.json')
 
         # Camara para el videojuego
         self.scroll = [0, 0]
