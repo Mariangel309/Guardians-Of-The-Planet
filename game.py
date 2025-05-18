@@ -1,8 +1,8 @@
 import sys
 import pygame
 
-from scripts.utils import load_image, load_images
-from scripts.entities import PhysicsEntity
+from scripts.utils import load_image, load_images, Animation
+from scripts.entities import PhysicsEntity, Player
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 
@@ -48,7 +48,12 @@ class Game:
             'stone': load_images('tiles/stone'),
             'player': load_image('entities/player.png'),
             'background': load_image('background.png'),
-            'clouds': load_images('clouds')
+            'clouds': load_images('clouds'),
+            'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
+            'player/run': Animation(load_images('entities/player/run'), img_dur=4),
+            'player/jump': Animation(load_images('entities/player/jump')),
+            'player/slide': Animation(load_images('entities/player/slide')),
+            'player/wall_slide': Animation(load_images('entities/player/wall_slide')),
         }
 
         self.menu_assets = {
@@ -59,22 +64,34 @@ class Game:
             'boton_creditos': pygame.image.load('data/images/menu_backgrounds/creditos.png'),
             'boton_salir': pygame.image.load('data/images/menu_backgrounds/salir.png'),
             'icono_config': pygame.image.load('data/images/menu_backgrounds/configuracion.png'),
-            'signo_mas': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/mas.png'), (70, 70)),
-            'volumen_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/volumen.png'), (420, 370)),
-            'signo_menos': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/menos.png'), (70, 70))
-        
-        }        
-        # Escalamos las imagenes del menú
-        self.menu_assets['background'] = pygame.transform.smoothscale(self.menu_assets['background'], (640, 480))        
-        self.menu_assets['titulo'] = pygame.transform.scale(self.menu_assets['titulo'], (600, 430))
-        self.menu_assets['boton_jugar'] = pygame.transform.scale(self.menu_assets['boton_jugar'], (132, 70))
-        self.menu_assets['boton_tienda'] = pygame.transform.scale(self.menu_assets['boton_tienda'], (132, 70))
-        self.menu_assets['boton_creditos'] = pygame.transform.scale(self.menu_assets['boton_creditos'], (132, 70))
-        self.menu_assets['boton_salir'] = pygame.transform.scale(self.menu_assets['boton_salir'], (120, 70))
-        self.menu_assets['icono_config'] = pygame.transform.scale(self.menu_assets['icono_config'], (80, 70))
+            'signo_mas': pygame.transform.scale(
+                pygame.image.load('data/images/menu_backgrounds/mas.png'), (70, 70)),
+            'volumen_titulo': pygame.transform.scale(
+                pygame.image.load('data/images/menu_backgrounds/volumen.png'), (420, 370)),
+            'signo_menos': pygame.transform.scale(
+                pygame.image.load('data/images/menu_backgrounds/menos.png'), (70, 70))
+        }
+
+        # Escalamos las imágenes del menú
+        self.menu_assets['background'] = pygame.transform.smoothscale(
+            self.menu_assets['background'], (640, 480))
+        self.menu_assets['titulo'] = pygame.transform.scale(
+            self.menu_assets['titulo'], (600, 430))
+        self.menu_assets['boton_jugar'] = pygame.transform.scale(
+            self.menu_assets['boton_jugar'], (132, 70))
+        self.menu_assets['boton_tienda'] = pygame.transform.scale(
+            self.menu_assets['boton_tienda'], (132, 70))
+        self.menu_assets['boton_creditos'] = pygame.transform.scale(
+            self.menu_assets['boton_creditos'], (132, 70))
+        self.menu_assets['boton_salir'] = pygame.transform.scale(
+            self.menu_assets['boton_salir'], (120, 70))
+        self.menu_assets['icono_config'] = pygame.transform.scale(
+            self.menu_assets['icono_config'], (80, 70))
 
         self.clouds = Clouds(self.assets['clouds'], count=16)
-        self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))
+
+        self.player = Player(self, (50, 50), (8, 15))
+        
         self.tilemap = Tilemap(self, tile_size=16)
 
         # Camara para el videojuego
@@ -140,7 +157,6 @@ class Game:
     def configuracion_menu(self):
 
         volver_img = pygame.transform.scale(pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
-        volver = Button(500, 400, 100, 40)
         aumentar = Button(390, 205, 52, 60)
         disminuir = Button(190, 220, 52, 30)
         volver = Button(195, 310, 250, 80)
