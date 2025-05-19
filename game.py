@@ -6,41 +6,45 @@ from scripts.entities import PhysicsEntity, Player
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 
-
+# Clase para definir botones en pantalla
 class Button:
     def __init__(self, x, y, width, height):
+        # Crea un rectángulo que representa el botón
         self.rect = pygame.Rect(x, y, width, height)
 
     def is_clicked(self, event):
+        # Verifica si el evento es un clic del mouse y si el clic está dentro del rectángulo del botón
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 return True
         return False
 
     def draw(self, surface):
-        pygame.draw.rect(surface, (255, 0, 0), self.rect, 2)
+        pass # Aquí puedes dibujar el botón si lo deseas, pero en este caso no es necesario
 
-
+# Clase principal del juego
 class Game:
     def __init__(self):
-        pygame.init()
+        pygame.init() # Inicializa Pygame
 
+        # Carga de música y efectos de sonido
         self.sonido_boton = pygame.mixer.Sound('data/sfx/boton.mp3')  # Ruta a el archivo de música
 
         self.volume = 0.5  # volumen inicial (50%)
-        pygame.mixer.init()
-        pygame.mixer.music.set_volume(self.volume)
+        pygame.mixer.init() # Inicializa el mezclador de Pygame
+        pygame.mixer.music.set_volume(self.volume) # Establece el volumen  de la música
 
-        pygame.display.set_caption('Guardians Of The Planet')
-        self.screen = pygame.display.set_mode((640, 480))
-        self.display = pygame.Surface((320, 240))
+        # Inicializa la pantalla
+        pygame.display.set_caption('Guardians Of The Planet') # Título de la ventana
+        self.screen = pygame.display.set_mode((640, 480)) # Tamaño de la ventana
+        self.display = pygame.Surface((320, 240)) # Pantalla de juego
 
-        self.clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock() # Reloj para controlar la velocidad de fotogramas
 
-        self.font = pygame.font.Font('data/Fonts/static/Oswald-Medium.ttf', 40)
+        self.font = pygame.font.Font('data/Fonts/static/Oswald-Medium.ttf', 40) # Carga la fuente
+        self.movement = [False, False] # Inicializa el movimiento del jugador (izquierda y derecha)
 
-        self.movement = [False, False]
-
+        # Carga de imágenes y animaciones
         self.assets = {
             'decor': load_images('tiles/decor'),
             'grass': load_images('tiles/grass'),
@@ -56,6 +60,7 @@ class Game:
             'player/wall_slide': Animation(load_images('entities/player/wall_slide')),
         }
 
+        # Carga de imágenes del menú
         self.menu_assets = {
             'background': pygame.image.load('data/images/menu_backgrounds/primero.png'),
             'titulo': pygame.image.load('data/images/menu_backgrounds/titulo.png'),
@@ -81,10 +86,13 @@ class Game:
         self.menu_assets['boton_salir'] = pygame.transform.scale(self.menu_assets['boton_salir'], (120, 70))
         self.menu_assets['icono_config'] = pygame.transform.scale(self.menu_assets['icono_config'], (80, 70))
 
+        # Crea las nubes decorativas del fondo
         self.clouds = Clouds(self.assets['clouds'], count=16)
 
+        # Crea el jugador
         self.player = Player(self, (50, 50), (8, 15))
         
+        # Carga el mapa
         self.tilemap = Tilemap(self, tile_size=16)
         self.tilemap.load('map.json')
 
