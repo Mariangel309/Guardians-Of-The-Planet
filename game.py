@@ -74,12 +74,10 @@ class Game:
             'boton_creditos': pygame.image.load('data/images/menu_backgrounds/creditos.png'),
             'boton_salir': pygame.image.load('data/images/menu_backgrounds/salir.png'),
             'icono_config': pygame.image.load('data/images/menu_backgrounds/configuracion.png'),
-            'signo_mas': pygame.transform.scale(
-                pygame.image.load('data/images/menu_backgrounds/mas.png'), (70, 70)),
-            'volumen_titulo': pygame.transform.scale(
-                pygame.image.load('data/images/menu_backgrounds/volumen.png'), (420, 370)),
-            'signo_menos': pygame.transform.scale(
-                pygame.image.load('data/images/menu_backgrounds/menos.png'), (70, 70))
+            'signo_mas': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/mas.png'), (70, 70)),
+            'volumen_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/volumen.png'), (420, 370)),
+            'signo_menos': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/menos.png'), (70, 70)),
+            'tienda_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/Tienda_titulo.png'), (420, 370))
         }
 
         # Escalamos las imágenes del menú
@@ -272,38 +270,32 @@ class Game:
             self.clock.tick(60)
 
     def tienda_menu(self):
-            volver_img = pygame.transform.scale(
-            pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
-            volver = Button(195, 310, 250, 80)
+            volver_img = pygame.transform.scale(pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
+            volver = Button(195, 360, 200, 80)
 
-            # Texto de ejemplo para los productos
+            
+            self.screen.blit(self.menu_assets['background'], (0, 0))
+            self.screen.blit(self.menu_assets['tienda_titulo'], (110, -110))
+
+            # Texto skins
             skins = [
-                {"nombre": "Ninja Verde", "pos": (100, 100)},
-                {"nombre": "Ninja Azul", "pos": (400, 100)},
-                {"nombre": "Ninja Naranja", "pos": (100, 220)},
-                {"nombre": "Ninja Original", "pos": (400, 220)},
+                {"nombre": "Ninja Verde", "pos": (100, 170)},
+                {"nombre": "Ninja Rosado", "pos": (370, 170)},
+                {"nombre": "Ninja Original", "pos": (220, 250)},
             ]
 
             while True:
-                self.screen.blit(self.menu_assets['background'], (0, 0))
-
-                titulo = self.font.render("TIENDA", True, (255, 255, 255))
-                self.screen.blit(titulo, (240, 30))
-
-                # Dibujar skins (nombre solamente por ahora faltan las skins)
+                
+                # Mostrar nombre skins
                 for producto in skins:
                     texto = self.font.render(producto["nombre"], True, (240, 180, 35))
                     self.screen.blit(texto, producto["pos"])
-
-                self.screen.blit(volver_img, (170, 250))  # Imagen del botón volver
+                
+                self.screen.blit(volver_img, (170, 300))  # Imagen del botón volver
 
                 for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                    if volver.is_clicked(event):
-                        self.sonido_boton.play()
-                        return
+                    
+                 hash()
 
                 pygame.display.update()
                 self.clock.tick(60)
