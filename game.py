@@ -25,11 +25,11 @@ class Game:
     def __init__(self):
         pygame.init()
 
+        self.sonido_boton = pygame.mixer.Sound('data/sfx/boton.mp3')  # Ruta a el archivo de música
 
         self.volume = 0.5  # volumen inicial (50%)
         pygame.mixer.init()
         pygame.mixer.music.set_volume(self.volume)
-
 
         pygame.display.set_caption('Guardians Of The Planet')
         self.screen = pygame.display.set_mode((640, 480))
@@ -73,20 +73,13 @@ class Game:
         }
 
         # Escalamos las imágenes del menú
-        self.menu_assets['background'] = pygame.transform.smoothscale(
-            self.menu_assets['background'], (640, 480))
-        self.menu_assets['titulo'] = pygame.transform.scale(
-            self.menu_assets['titulo'], (600, 430))
-        self.menu_assets['boton_jugar'] = pygame.transform.scale(
-            self.menu_assets['boton_jugar'], (132, 70))
-        self.menu_assets['boton_tienda'] = pygame.transform.scale(
-            self.menu_assets['boton_tienda'], (132, 70))
-        self.menu_assets['boton_creditos'] = pygame.transform.scale(
-            self.menu_assets['boton_creditos'], (132, 70))
-        self.menu_assets['boton_salir'] = pygame.transform.scale(
-            self.menu_assets['boton_salir'], (120, 70))
-        self.menu_assets['icono_config'] = pygame.transform.scale(
-            self.menu_assets['icono_config'], (80, 70))
+        self.menu_assets['background'] = pygame.transform.smoothscale(self.menu_assets['background'], (640, 480))
+        self.menu_assets['titulo'] = pygame.transform.scale(self.menu_assets['titulo'], (600, 430))
+        self.menu_assets['boton_jugar'] = pygame.transform.scale(self.menu_assets['boton_jugar'], (132, 70))
+        self.menu_assets['boton_tienda'] = pygame.transform.scale(self.menu_assets['boton_tienda'], (132, 70))
+        self.menu_assets['boton_creditos'] = pygame.transform.scale(self.menu_assets['boton_creditos'], (132, 70))
+        self.menu_assets['boton_salir'] = pygame.transform.scale(self.menu_assets['boton_salir'], (120, 70))
+        self.menu_assets['icono_config'] = pygame.transform.scale(self.menu_assets['icono_config'], (80, 70))
 
         self.clouds = Clouds(self.assets['clouds'], count=16)
 
@@ -98,6 +91,7 @@ class Game:
         # Camara para el videojuego
         self.scroll = [0, 0]
 
+
     def main_menu(self):
 
         pygame.mixer.music.load('data/music.wav')  # Ruta a el archivo de música
@@ -105,6 +99,7 @@ class Game:
 
         background = self.menu_assets['background'] 
         ancho = 640
+
 
         # Botones con su propio rectángulo (posición + tamaño independiente de la imagen)
         play_button = Button(73, 402, 110, 27)
@@ -141,15 +136,20 @@ class Game:
 
                 if play_button.is_clicked(event):
                     pygame.mixer.music.stop()
+                    self.sonido_boton.play()
                     return
                 if store_button.is_clicked(event):
+                    self.sonido_boton.play()
                     self.tienda_menu()
                 if credits_button.is_clicked(event):
                     print("Mostrar créditos")
+                    self.sonido_boton.play()
                 if quit_button.is_clicked(event):
+                    self.sonido_boton.play()
                     pygame.quit()
                     sys.exit()
                 if icono_configuracion.is_clicked(event):
+                    self.sonido_boton.play()
                     self.configuracion_menu()
 
             pygame.display.update()
@@ -182,12 +182,15 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if aumentar.is_clicked(event):
+                    self.sonido_boton.play()
                     self.volume = min(1.0, self.volume + 0.1)
                     pygame.mixer.music.set_volume(self.volume)
                 if disminuir.is_clicked(event):
+                    self.sonido_boton.play()
                     self.volume = max(0.0, self.volume - 0.1)
                     pygame.mixer.music.set_volume(self.volume)
                 if volver.is_clicked(event):
+                    self.sonido_boton.play()
                     return
 
             pygame.display.update()
@@ -231,9 +234,10 @@ class Game:
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
             pygame.display.update()
             self.clock.tick(60)
+
     def tienda_menu(self):
             volver_img = pygame.transform.scale(
-                pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
+            pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
             volver = Button(195, 310, 250, 80)
 
             # Texto de ejemplo para los productos
@@ -262,6 +266,7 @@ class Game:
                         pygame.quit()
                         sys.exit()
                     if volver.is_clicked(event):
+                        self.sonido_boton.play()
                         return
 
                 pygame.display.update()
