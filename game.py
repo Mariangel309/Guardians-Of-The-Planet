@@ -294,8 +294,12 @@ class Game:
                 self.screen.blit(volver_img, (170, 300))  # Imagen del botón volver
 
                 for event in pygame.event.get():
-                    
-                 hash()
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    if volver.is_clicked(event):
+                        self.sonido_boton.play()
+                        return
 
                 pygame.display.update()
                 self.clock.tick(60)
