@@ -108,6 +108,7 @@ class Game:
         self.load_level(self.level)
 
         self.screenshake = 0
+
     def load_level(self, map_id):
         self.tilemap.load('data/maps/' + str(map_id) + '.json')
 
@@ -235,7 +236,6 @@ class Game:
             pygame.display.update()
             self.clock.tick(60)
     def run(self):
-
         while True:
             self.display.blit(self.assets['background'], (0, 0))
 
@@ -329,7 +329,10 @@ class Game:
                         self.movement[1] = False
 
             screenshake_offset = (random.random() * self.screenshake - self.screenshake / 2, random.random() * self.screenshake - self.screenshake / 2)                       
-            self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
+            self.screen.blit(
+                pygame.transform.scale(self.display, self.screen.get_size()), 
+                (int(screenshake_offset[0]), int(screenshake_offset[1]))
+            )
             pygame.display.update()
             self.clock.tick(60)
 

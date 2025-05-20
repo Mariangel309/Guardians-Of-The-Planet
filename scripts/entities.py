@@ -135,6 +135,7 @@ class Enemy(PhysicsEntity):
             self.set_action('hurt')
             self.hurt_timer = 30
             self.velocity = [0, 0]
+            self.game.screenshake = max(16, self.game.screenshake)
             for _ in range(30):
                 angle = random.random() * math.pi * 2
                 speed = random.random() * 5
