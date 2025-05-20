@@ -167,6 +167,7 @@ class Player(PhysicsEntity):
         self.jumps = 1
         self.wall_slide = False
         self.dashing = 0
+        self.vidas = 3
     
     def update(self, tilemap, movement=(0, 0)):
         super().update(tilemap, movement=movement)
@@ -176,7 +177,7 @@ class Player(PhysicsEntity):
         if self.air_time > 120:
             if not self.game.dead:
                 self.game.screenshake = max(16, self.game.screenshake)
-            self.game.dead += 1
+                self.take_damage()
 
         if self.collisions['down']:
             self.air_time = 0
@@ -225,7 +226,7 @@ class Player(PhysicsEntity):
     def render(self, surf, offset=(0, 0)):
         if abs(self.dashing) <= 50:
             super().render(surf, offset=offset)
-            
+          
     def jump(self):
         if self.wall_slide:
             if self.flip and self.last_movement[0] < 0:
@@ -253,6 +254,11 @@ class Player(PhysicsEntity):
                 self.dashing = -60
             else:
                 self.dashing = 60
+
+    def take_damage(self): 
+        self.vidas -= 1 # Se restan vidas
+        if self.vidas <= 0:
+            self.game.dead = 1
 
 
 

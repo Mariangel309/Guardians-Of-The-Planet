@@ -95,6 +95,9 @@ class Game:
         self.menu_assets['boton_salir'] = pygame.transform.scale(self.menu_assets['boton_salir'], (120, 70))
         self.menu_assets['icono_config'] = pygame.transform.scale(self.menu_assets['icono_config'], (80, 70))
 
+        self.heart_img = pygame.image.load('data/images/souls/corazon.png').convert_alpha()# Carga la imagen del corazón
+        self.heart_img = pygame.transform.scale(self.heart_img, (32, 32))# Escala la imagen del corazón
+
         # Crea las nubes decorativas del fondo
         self.clouds = Clouds(self.assets['clouds'], count=16)
 
@@ -235,6 +238,7 @@ class Game:
 
             pygame.display.update()
             self.clock.tick(60)
+
     def run(self):
         while True:
             self.display.blit(self.assets['background'], (0, 0))
@@ -271,6 +275,8 @@ class Game:
             if not self.dead:
                 self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
                 self.player.render(self.display, offset=render_scroll)
+                for i in range(self.player.vidas): # Corazones
+                    self.display.blit(self.heart_img, (5 + i * 34, 5)) # Posición del corazón
             
             # [[x, y], direction, timer]
             for projectile in self.projectiles.copy():
@@ -287,7 +293,7 @@ class Game:
                 elif abs(self.player.dashing) < 50:
                     if self.player.rect().collidepoint(projectile[0]):
                         self.projectiles.remove(projectile)
-                        self.dead += 1
+                        self.player.take_damage()
                         self.screenshake = max(16, self.screenshake)
                         for i in range(30):
                             angle = random.random() * math.pi * 2
