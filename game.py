@@ -59,6 +59,7 @@ class Game:
             'clouds': load_images('clouds'),
             'enemy/idle': Animation(load_images('entities/enemy/idle'), img_dur=6),
             'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=4),
+            'enemy/hurt': Animation(load_images('entities/enemy/hurt'), img_dur=4, loop=False),
             'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
             'player/run': Animation(load_images('entities/player/run'), img_dur=4),
             'player/jump': Animation(load_images('entities/player/jump')),
@@ -103,7 +104,8 @@ class Game:
         # Carga el mapa
         self.tilemap = Tilemap(self, tile_size=16)
 
-        self.load_level(0)
+        self.level = 0
+        self.load_level(self.level)
 
         self.screenshake = 0
     def load_level(self, map_id):
@@ -126,6 +128,7 @@ class Game:
         
         self.scroll = [0, 0]
         self.dead = 0
+        self.transition = -30
 
 
     def main_menu(self):
@@ -241,7 +244,7 @@ class Game:
             if self.dead:
                 self.dead += 1
                 if self.dead > 40:
-                    self.load_level(0)
+                    self.load_level(self.level)
 
             # Movimiento de la cámara directamente al jugador
 
