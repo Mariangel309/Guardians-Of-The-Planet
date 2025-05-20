@@ -84,7 +84,8 @@ class Game:
             'signo_mas': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/mas.png'), (70, 70)),
             'volumen_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/volumen.png'), (420, 370)),
             'signo_menos': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/menos.png'), (70, 70)),
-            'tienda_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/Tienda_titulo.png'), (420, 370))
+            'tienda_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/Tienda_titulo.png'), (420, 370)),
+            'game_over': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/gameover.png'), (420, 370))
         }
 
         # Escalamos las imágenes del menú
@@ -97,7 +98,7 @@ class Game:
         self.menu_assets['icono_config'] = pygame.transform.scale(self.menu_assets['icono_config'], (80, 70))
 
         self.heart_img = pygame.image.load('data/images/souls/corazon.png').convert_alpha()# Carga la imagen del corazón
-        self.heart_img = pygame.transform.scale(self.heart_img, (32, 32))# Escala la imagen del corazón
+        self.heart_img = pygame.transform.scale(self.heart_img, (24, 24))# Escala la imagen del corazón
 
         # Crea las nubes decorativas del fondo
         self.clouds = Clouds(self.assets['clouds'], count=16)
@@ -181,6 +182,8 @@ class Game:
                 if play_button.is_clicked(event):
                     pygame.mixer.music.stop()
                     self.sonido_boton.play()
+                    self.reset_game()
+                    self.run()
                     return
                 if store_button.is_clicked(event):
                     self.sonido_boton.play()
@@ -287,7 +290,10 @@ class Game:
                 self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
                 self.player.render(self.display, offset=render_scroll)
                 for i in range(self.player.vidas): # Corazones
-                    self.display.blit(self.heart_img, (5 + i * 34, 5)) # Posición del corazón
+                    self.display.blit(self.heart_img, (5 + i * 25, 5)) # Posición del corazón
+                if self.player.vidas <= 0:
+                    self.game_over()
+                    return
             
             # [[x, y], direction, timer]
             for projectile in self.projectiles.copy():
@@ -394,7 +400,33 @@ class Game:
                 pygame.display.update()
                 self.clock.tick(60)
 
+    def game_over(self):
+        volver_img = pygame.transform.scale(pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
+        volver = Button(195, 360, 200, 80)
+        self.screen.blit(self.menu_assets['background'], (0, 0))
+        self.screen.blit(self.menu_assets['game_over'], (110, -20)) 
+        self.screen.blit(volver_img, (170, 300))  # Imagen del botón volver
 
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if volver.is_clicked(event):
+                    self.main_menu()
+                    self.sonido_boton.play()
+                    return
+
+            pygame.display.update()
+            self.clock.tick(60)
+
+    def reset_game(self):
+        self.level = 0
+        self.load_level(self.level)
+        self.player.vidas = 3
+        self.dead = 0
+        self.transition = 0
+        self.scroll = [0, 0]
 
 if __name__ == '__main__':
     game = Game()
