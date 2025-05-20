@@ -9,14 +9,12 @@ def load_image(path):
     img.set_colorkey((0, 0, 0))
     return img
 
-#Funcion que carga todos los tiles
 def load_images(path):
     images = []
     for img_name in sorted(os.listdir(BASE_IMG_PATH + path)):
         images.append(load_image(path + '/' + img_name))
     return images
 
-#Sistema de animaciones
 class Animation:
     def __init__(self, images, img_dur=5, loop=True):
         self.images = images
@@ -36,6 +34,5 @@ class Animation:
             if self.frame >= self.img_duration * len(self.images) - 1:
                 self.done = True
     
-    #Renderizacion de las animaciones
     def img(self):
         return self.images[int(self.frame / self.img_duration)]
