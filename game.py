@@ -373,6 +373,10 @@ class Game:
             self.screen.blit(self.menu_assets['background'], (0, 0))
             self.screen.blit(self.menu_assets['tienda_titulo'], (110, -110))
 
+            boton_skin_verde = Button(100, 185, 180, 35)
+            boton_skin_rosado = Button(370, 185, 200, 35)
+            boton_skin_original = Button(220, 267, 211, 35)
+
             # Texto skins
             skins = [
                 {"nombre": "Ninja Verde", "pos": (100, 170)},
@@ -396,6 +400,16 @@ class Game:
                     if volver.is_clicked(event):
                         self.sonido_boton.play()
                         return
+                    if boton_skin_verde.is_clicked(event):
+                        self.sonido_boton.play()
+                        self.skin_seleccionada = 'Ninja_verde'
+                    if boton_skin_rosado.is_clicked(event):
+                        self.sonido_boton.play()
+                        self.skin_seleccionada = 'Ninja_rosado'
+                    if boton_skin_original.is_clicked(event):
+                        self.sonido_boton.play()
+                        self.skin_seleccionada = 'player'
+
 
                 pygame.display.update()
                 self.clock.tick(60)
