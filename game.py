@@ -72,6 +72,20 @@ class Game:
             'projectile': load_image('projectile.png'),
         }
 
+        self.level = 0
+
+        self.backgrounds = {
+            0: pygame.image.load('data/images/backgrounds/background_0.png').convert(),
+            1: pygame.image.load('data/images/backgrounds/background_1.png').convert(),
+            2: pygame.image.load('data/images/backgrounds/background_2.png').convert(),
+        }
+
+        for key in self.backgrounds:
+            self.backgrounds[key] = pygame.transform.scale(self.backgrounds[key], self.display.get_size())
+        self.current_background = self.backgrounds[self.level]
+        self.prev_background = self.current_background
+        self.background_alpha = 255
+
         # Carga de imágenes del menú
         self.menu_assets = {
             'background': pygame.image.load('data/images/menu_backgrounds/primero.png'),
@@ -136,6 +150,10 @@ class Game:
         self.dead = 0
         self.transition = -30
 
+        self.prev_background = self.current_background
+        self.current_background = self.backgrounds.get(self.level, self.current_background)
+        self.background_alpha = 0
+
 
     def main_menu(self):
 
@@ -182,6 +200,7 @@ class Game:
                 if play_button.is_clicked(event):
                     pygame.mixer.music.stop()
                     self.sonido_boton.play()
+                    self.player.vidas = 3
                     self.reset_game()
                     self.run()
                     return
@@ -244,8 +263,23 @@ class Game:
             self.clock.tick(60)
 
     def run(self):
+
         while True:
-            self.display.blit(self.assets['background'], (0, 0))
+
+            if self.player.vidas <= 0:
+                self.sonido_boton.play()
+                self.reset_game()
+                self.game_over()
+                return           
+            self.display.blit(self.prev_background, (0, 0))
+
+            if self.background_alpha < 255:
+                bg_copy = self.current_background.copy()
+                bg_copy.set_alpha(self.background_alpha)
+                self.display.blit(bg_copy, (0, 0))
+                self.background_alpha = min(255, self.background_alpha + 5)
+            else:
+                self.display.blit(self.current_background, (0, 0))
 
             self.screenshake = max(0, self.screenshake - 1)
 
@@ -262,8 +296,8 @@ class Game:
                 if self.dead >= 10:
                     self.transition = min(30, self.transition + 1)
                 if self.dead > 40:
-                    self.load_level(self.level)
-
+                    self.player.vidas = 0    # forzá la muerte
+                    continue
             # Movimiento de la cámara directamente al jugador
 
             self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
@@ -438,6 +472,9 @@ class Game:
         self.level = 0
         self.load_level(self.level)
         self.player.vidas = 3
+        self.player.air_time = 0
+        self.player.jumps = 1
+        self.player.dashing = 0
         self.dead = 0
         self.transition = 0
         self.scroll = [0, 0]
