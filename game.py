@@ -128,13 +128,19 @@ class Game:
         self.screenshake = 0
 
         self.sonido_dash = pygame.mixer.Sound('data/sfx/dash.wav')
-        self.sonido_dash.set_volume(0.05)
+        self.sonido_dash.set_volume(0.15)
 
         self.sonido_saltar = pygame.mixer.Sound('data/sfx/jump.wav')
         self.sonido_saltar.set_volume(0.42)
 
         self.sonido_golpe_enemigo = pygame.mixer.Sound('data/sfx/hit.wav')
         self.sonido_golpe_enemigo.set_volume(0.32)
+
+        self.musicadefondo = pygame.mixer.Sound('data/sfx/musicadefondo.ogg')
+        self.musicadefondo.set_volume(0.4)        
+
+        self.sonidodemuerte = pygame.mixer.Sound('data/sfx/umm.wav')
+        self.sonidodemuerte.set_volume(0.4)     
 
     def load_level(self, map_id):
         self.tilemap.load('data/maps/' + str(map_id) + '.json')
@@ -271,7 +277,7 @@ class Game:
             self.clock.tick(60)
 
     def run(self):
-
+        self.musicadefondo.play(-1) 
         pygame.mixer.music.load('data/sfx/ambience.wav') 
         pygame.mixer.music.set_volume(0.3)  # volumen entre 0.0 y 1.0
         pygame.mixer.music.play(-1)  # -1 para que se repita en loop
@@ -279,6 +285,7 @@ class Game:
         while True:
 
             if self.player.vidas <= 0:
+                self.sonidodemuerte.play()
                 self.sonido_boton.play()
                 self.reset_game()
                 self.game_over()
@@ -339,6 +346,7 @@ class Game:
                 for i in range(self.player.vidas): # Corazones
                     self.display.blit(self.heart_img, (5 + i * 25, 5)) # Posición del corazón
                 if self.player.vidas <= 0:
+                    self.musicadefondo.stop()
                     self.game_over()
                     return
             
