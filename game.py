@@ -11,7 +11,7 @@ from scripts.clouds import Clouds
 from scripts.particle import Particle
 from scripts.spark import Spark
 
-# Clase para definir botones en pantalla
+
 class Button:
     def __init__(self, x, y, width, height):
         # Crea un rectángulo que representa el botón
@@ -201,6 +201,7 @@ class Game:
                     self.sonido_boton.play()
                     self.player.vidas = 3
                     self.reset_game()
+                    self.npc_intro_dialogue()
                     self.run()
                     return
                 if store_button.is_clicked(event):
@@ -260,6 +261,89 @@ class Game:
 
             pygame.display.update()
             self.clock.tick(60)
+
+    def npc_intro_dialogue(self):
+        pygame.event.clear()  
+
+        messages = [
+            "¡Hola, guardián!",
+            "Este mundo está lleno de peligros… estás preparado?",
+            "Derrota a los enemigos y salva el planeta",
+            "¡Buena suerte!"
+        ]
+
+        
+        try:
+            nnnn_image = pygame.image.load("data/images/imnpc/nnnn.png").convert_alpha()
+            next_image = pygame.image.load("data/images/imnpc/next.png").convert_alpha()
+        except Exception as e:
+            print("Error cargando imágenes del NPC o botón next:", e)
+            return
+        
+        altura_caja = 450  # Altura fija de la caja
+        nnnn_image = pygame.transform.scale(nnnn_image, (self.screen.get_width(), altura_caja))
+    
+
+
+        nnnn_rect = nnnn_image.get_rect()
+        nnnn_rect.bottom = self.screen.get_height()  # Parte inferior de la pantalla
+        nnnn_rect.left = 0  # Alineado al borde izquierdo
+
+        text_area = pygame.Rect(nnnn_rect.left + 200, nnnn_rect.top + altura_caja - 100, nnnn_rect.width - 260, 200)
+        # Posicionar el botón 'next'
+        next_image = pygame.transform.scale(next_image, (200, 90))  # También puedes escalarlo como en tu ejemplo
+        next_rect = next_image.get_rect()
+        next_rect.bottomright = (nnnn_rect.right - 30, nnnn_rect.bottom - 30)
+
+        font = pygame.font.Font(None, 28)
+        clock = pygame.time.Clock()
+        message_index = 0
+
+        def draw_text_wrapped(surface, text, font, color, rect):
+            words = text.split(' ')
+            lines = []
+            line = ''
+            for word in words:
+                test_line = line + word + ' '
+                if font.size(test_line)[0] <= rect.width:
+                    line = test_line
+                else:
+                    lines.append(line)
+                    line = word + ' '
+            lines.append(line)
+
+            y = rect.top
+            line_height = font.get_linesize()
+            for line in lines:
+                rendered = font.render(line.strip(), True, color)
+                surface.blit(rendered, (rect.left, y))
+                y += line_height
+
+        running = True
+        while running and message_index < len(messages):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if next_rect.collidepoint(event.pos):
+                        message_index += 1
+                        if message_index >= len(messages):
+                            running = False
+
+            self.screen.blit(self.menu_assets['background'], (0, 0))  # Usa el fondo del menú
+
+            self.screen.blit(nnnn_image, nnnn_rect)
+            if message_index < len(messages):
+                draw_text_wrapped(self.screen, messages[message_index], font, (0,0,0), text_area)
+
+            # Botón next
+            self.screen.blit(next_image, next_rect)
+           
+            pygame.display.update()
+            clock.tick(60)
+
+
 
     def run(self):
 
