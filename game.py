@@ -127,6 +127,15 @@ class Game:
 
         self.screenshake = 0
 
+        self.sonido_dash = pygame.mixer.Sound('data/sfx/dash.wav')
+        self.sonido_dash.set_volume(0.05)
+
+        self.sonido_saltar = pygame.mixer.Sound('data/sfx/jump.wav')
+        self.sonido_saltar.set_volume(0.42)
+
+        self.sonido_golpe_enemigo = pygame.mixer.Sound('data/sfx/hit.wav')
+        self.sonido_golpe_enemigo.set_volume(0.32)
+
     def load_level(self, map_id):
         self.tilemap.load('data/maps/' + str(map_id) + '.json')
 
@@ -263,6 +272,10 @@ class Game:
 
     def run(self):
 
+        pygame.mixer.music.load('data/sfx/ambience.wav') 
+        pygame.mixer.music.set_volume(0.3)  # volumen entre 0.0 y 1.0
+        pygame.mixer.music.play(-1)  # -1 para que se repita en loop
+
         while True:
 
             if self.player.vidas <= 0:
@@ -317,6 +330,7 @@ class Game:
                 kill = enemy.update(self.tilemap, (0, 0))
                 enemy.render(self.display, offset=render_scroll)
                 if kill:
+                    self.sonido_golpe_enemigo.play()
                     self.enemies.remove(enemy)
             
             if not self.dead:
@@ -376,8 +390,10 @@ class Game:
                         self.movement[1] = True
                     if event.key == pygame.K_UP:
                         self.player.jump()
+                        self.sonido_saltar.play()
                     if event.key == pygame.K_x:
                         self.player.dash()
+                        self.sonido_dash.play()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
                         self.movement[0] = False
@@ -448,6 +464,8 @@ class Game:
                 self.clock.tick(60)
 
     def game_over(self):
+        pygame.mixer.music.load('data/music.wav')  # Ruta a el archivo de música
+        pygame.mixer.music.play(-1)  # -1 significa que se reproduce en bucle infinito
         volver_img = pygame.transform.scale(pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
         volver = Button(195, 360, 200, 80)
         self.screen.blit(self.menu_assets['background'], (0, 0))
