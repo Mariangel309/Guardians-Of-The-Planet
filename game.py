@@ -98,7 +98,7 @@ class Game:
             'volumen_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/volumen.png'), (420, 370)),
             'signo_menos': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/menos.png'), (70, 70)),
             'tienda_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/Tienda_titulo.png'), (420, 370)),
-            'game_over': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/gameover.png'), (420, 370))
+            'game_over': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/gameover1.png'), (520, 460))
         }
 
         # Escalamos las imágenes del menú
@@ -128,7 +128,7 @@ class Game:
         self.screenshake = 0
 
         self.sonido_dash = pygame.mixer.Sound('data/sfx/dash.wav')
-        self.sonido_dash.set_volume(0.15)
+        self.sonido_dash.set_volume(0.1)
 
         self.sonido_saltar = pygame.mixer.Sound('data/sfx/jump.wav')
         self.sonido_saltar.set_volume(0.42)
@@ -137,10 +137,13 @@ class Game:
         self.sonido_golpe_enemigo.set_volume(0.32)
 
         self.musicadefondo = pygame.mixer.Sound('data/sfx/musicadefondo.ogg')
-        self.musicadefondo.set_volume(0.4)        
+        self.musicadefondo.set_volume(0.32)        
 
-        self.sonidodemuerte = pygame.mixer.Sound('data/sfx/umm.wav')
-        self.sonidodemuerte.set_volume(0.4)     
+        self.sonidodemuerte = pygame.mixer.Sound('data/sfx/death.wav')
+        self.sonidodemuerte.set_volume(1)     
+
+        self.corriendo = pygame.mixer.Sound('data/sfx/corriendo.mp3')
+        self.corriendo.set_volume(0.62)     
 
     def load_level(self, map_id):
         self.tilemap.load('data/maps/' + str(map_id) + '.json')
@@ -370,7 +373,6 @@ class Game:
 
             if self.player.vidas <= 0:
                 self.sonidodemuerte.play()
-                self.sonido_boton.play()
                 self.reset_game()
                 self.game_over()
                 return           
@@ -399,6 +401,7 @@ class Game:
                 if self.dead >= 10:
                     self.transition = min(30, self.transition + 1)
                 if self.dead > 40:
+                    self.sonidodemuerte.play()
                     self.player.vidas = 0    # forzá la muerte
                     continue
             # Movimiento de la cámara directamente al jugador
@@ -477,8 +480,10 @@ class Game:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
+                        self.corriendo.play(-1)  # Reproduce el sonido de correr
                         self.movement[0] = True
                     if event.key == pygame.K_RIGHT:
+                        self.corriendo.play(-1) 
                         self.movement[1] = True
                     if event.key == pygame.K_UP:
                         self.player.jump()
@@ -488,8 +493,10 @@ class Game:
                         self.sonido_dash.play()
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
+                        self.corriendo.stop()
                         self.movement[0] = False
                     if event.key == pygame.K_RIGHT:
+                        self.corriendo.stop()
                         self.movement[1] = False
             
             if self.transition:
@@ -556,12 +563,13 @@ class Game:
                 self.clock.tick(60)
 
     def game_over(self):
+        self.musicadefondo.stop()  # Detiene la música de fondo
         pygame.mixer.music.load('data/music.wav')  # Ruta a el archivo de música
         pygame.mixer.music.play(-1)  # -1 significa que se reproduce en bucle infinito
         volver_img = pygame.transform.scale(pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 200))
         volver = Button(195, 360, 200, 80)
         self.screen.blit(self.menu_assets['background'], (0, 0))
-        self.screen.blit(self.menu_assets['game_over'], (110, -20)) 
+        self.screen.blit(self.menu_assets['game_over'], (60, -20)) 
         self.screen.blit(volver_img, (170, 300))  # Imagen del botón volver
 
         while True:
@@ -570,8 +578,8 @@ class Game:
                     pygame.quit()
                     sys.exit()
                 if volver.is_clicked(event):
-                    self.main_menu()
                     self.sonido_boton.play()
+                    self.main_menu()
                     return
 
             pygame.display.update()

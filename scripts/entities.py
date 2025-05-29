@@ -21,6 +21,9 @@ class PhysicsEntity:
         self.set_action('idle')
         
         self.last_movement = [0, 0]
+
+        self.daño_al_personaje = pygame.mixer.Sound('data/sfx/dañoalpersonaje.mp3')
+        self.daño_al_personaje.set_volume(0.2)
     
     def rect(self):
         return pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
@@ -257,6 +260,7 @@ class Player(PhysicsEntity):
 
     def take_damage(self): 
         self.vidas -= 1 # Se restan vidas
+        self.daño_al_personaje.play()
         if self.vidas <= 0:
             self.game.dead = 1
 
