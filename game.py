@@ -563,6 +563,7 @@ class Game:
                 self.clock.tick(60)
 
     def game_over(self):
+        self.corriendo.stop()
         self.musicadefondo.stop()  # Detiene la música de fondo
         pygame.mixer.music.load('data/music.wav')  # Ruta a el archivo de música
         pygame.mixer.music.play(-1)  # -1 significa que se reproduce en bucle infinito
@@ -595,6 +596,7 @@ class Game:
         self.dead = 0
         self.transition = 0
         self.scroll = [0, 0]
+        self.movement = [False, False]
 
 if __name__ == '__main__':
     game = Game()
