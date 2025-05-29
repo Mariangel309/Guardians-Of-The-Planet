@@ -153,11 +153,14 @@ class Game:
             self.leaf_spawners.append(pygame.Rect(4 + tree['pos'][0], 4 + tree['pos'][1], 23, 13))
 
         self.enemies = []
-        for spawner in self.tilemap.extract([('spawners', 0), ('spawners', 1)]):
-            if spawner['variant'] == 0:
-                self.player.pos = spawner['pos']
-            else:
-                self.enemies.append(Enemy(self, spawner['pos'], (8, 15)))
+        enemy_spawners = [s for s in self.tilemap.extract([('spawners', 1)])]
+        if self.level == 2:
+            enemy_spawners = enemy_spawners[:5]
+        for spawner in enemy_spawners:
+            self.enemies.append(Enemy(self, spawner['pos'], (8, 15)))
+        
+        for spawner in self.tilemap.extract([('spawners', 0)]):
+            self.player.pos = spawner['pos']
 
         self.projectiles = []
         self.particles = []
