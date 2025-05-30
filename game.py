@@ -35,6 +35,8 @@ class Game:
         self.enemigos_derrotados = 0
         self.total_enemigos = 0
 
+        self.pixel_font = pygame.font.Font('data/Fonts/pixel_font.ttf', 12)
+
         # Carga de música y efectos de sonido
         self.sonido_boton = pygame.mixer.Sound('data/sfx/boton.mp3')  # Ruta a el archivo de música
 
@@ -50,6 +52,7 @@ class Game:
         self.clock = pygame.time.Clock() # Reloj para controlar la velocidad de fotogramas
 
         self.font = pygame.font.Font('data/Fonts/static/Oswald-Medium.ttf', 40) # Carga la fuente
+        
         self.movement = [False, False] # Inicializa el movimiento del jugador (izquierda y derecha)
 
         # Carga de imágenes y animaciones
@@ -124,6 +127,8 @@ class Game:
 
         # Crea las nubes decorativas del fondo
         self.clouds = Clouds(self.assets['clouds'], count=16)
+
+        self.enemy_icon = pygame.image.load('data/images/ui/enemy_icon.png').convert_alpha()
 
         # Crea el jugador
         self.player = Player(self, (50, 50), (8, 15))
@@ -454,8 +459,9 @@ class Game:
                 self.player.render(self.display, offset=render_scroll)
                 for i in range(self.player.vidas): # Corazones
                     self.display.blit(self.heart_img, (5 + i * 25, 5)) # Posición del corazón
-                enemy_count_text = pixel_font.render(f'Enemigos restantes: {len(self.enemies)}', True, (255, 255, 255))
-                self.display.blit(enemy_count_text, (10, 30))
+                self.display.blit(self.enemy_icon, (5, 35))
+                enemy_count_text = self.pixel_font.render(f'x {len(self.enemies)}', True, (255, 255, 255))
+                self.display.blit(enemy_count_text, (30, 35))
                 if self.player.vidas <= 0:
                     self.musicadefondo.stop()
                     self.game_over()
