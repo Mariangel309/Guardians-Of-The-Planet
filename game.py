@@ -32,6 +32,9 @@ class Game:
     def __init__(self):
         pygame.init() # Inicializa Pygame
 
+        self.enemigos_derrotados = 0
+        self.total_enemigos = 0
+
         # Carga de música y efectos de sonido
         self.sonido_boton = pygame.mixer.Sound('data/sfx/boton.mp3')  # Ruta a el archivo de música
 
@@ -161,7 +164,11 @@ class Game:
         self.enemies = []
         enemy_spawners = [s for s in self.tilemap.extract([('spawners', 1)])]
         if self.level == 2:
-            enemy_spawners = random.sample(enemy_spawners, 5)
+            if len(enemy_spawners) >= 15:
+                step = len(enemy_spawners) // 15
+                enemy_spawners = [enemy_spawners[i] for i in range(0, len(enemy_spawners), step)][:15]
+            else:
+                enemy_spawners = enemy_spawners
         enemy_type = 'enemy'
         if self.level == 1:
             enemy_type = 'enemy1'
@@ -231,7 +238,7 @@ class Game:
                 if play_button.is_clicked(event):
                     pygame.mixer.music.stop()
                     self.sonido_boton.play()
-                    self.player.vidas = 3
+                    fdas = 3
                     self.reset_game()
                     self.npc_intro_dialogue()
                     self.run()
@@ -383,6 +390,7 @@ class Game:
         pygame.mixer.music.set_volume(0.3)  # volumen entre 0.0 y 1.0
         pygame.mixer.music.play(-1)  # -1 para que se repita en loop
 
+        pixel_font = pygame.font.Font('data/Fonts/pixel_font.ttf', 9)
         while True:
 
             if self.player.vidas <= 0:
@@ -446,6 +454,8 @@ class Game:
                 self.player.render(self.display, offset=render_scroll)
                 for i in range(self.player.vidas): # Corazones
                     self.display.blit(self.heart_img, (5 + i * 25, 5)) # Posición del corazón
+                enemy_count_text = pixel_font.render(f'Enemigos restantes: {len(self.enemies)}', True, (255, 255, 255))
+                self.display.blit(enemy_count_text, (10, 30))
                 if self.player.vidas <= 0:
                     self.musicadefondo.stop()
                     self.game_over()

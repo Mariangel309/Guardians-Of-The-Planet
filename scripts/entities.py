@@ -135,6 +135,7 @@ class Enemy(PhysicsEntity):
         
         if abs(self.game.player.dashing) >= 50 and self.rect().colliderect(self.game.player.rect()):
             self.alive = False
+            self.game.enemigos_derrotados += 1
             self.set_action('hurt')
             self.hurt_timer = 30
             self.velocity = [0, 0]
