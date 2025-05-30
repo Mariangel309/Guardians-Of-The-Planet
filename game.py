@@ -387,6 +387,80 @@ class Game:
             pygame.display.update()
             clock.tick(60)
 
+    def npc_outro_dialogue(self):
+        pygame.event.clear()  
+
+        messages = [
+            "¡Felicidades, guardián!",
+            "Has salvado el planeta de la amenaza.",
+            "Tu valentía será recordada por siempre.",
+            "Ahora que has salvado el mundo virtual...¿salvas el mundo real?"
+        ]
+
+        try:
+            nnnn_image = pygame.image.load("data/images/imnpc/nnnn.png").convert_alpha()
+            next_image = pygame.image.load("data/images/imnpc/next.png").convert_alpha()
+        except Exception as e:
+            print("Error cargando imágenes del NPC o botón next:", e)
+            return
+    
+        altura_caja = 450
+        nnnn_image = pygame.transform.scale(nnnn_image, (self.screen.get_width(), altura_caja))
+        nnnn_rect = nnnn_image.get_rect()
+        nnnn_rect.bottom = self.screen.get_height()
+        nnnn_rect.left = 0
+
+        text_area = pygame.Rect(nnnn_rect.left + 200, nnnn_rect.top + altura_caja - 100, nnnn_rect.width - 260, 200)
+        next_image = pygame.transform.scale(next_image, (200, 90))
+        next_rect = next_image.get_rect()
+        next_rect.bottomright = (nnnn_rect.right - 30, nnnn_rect.bottom - 30)
+
+        font = pygame.font.Font(None, 28)
+        clock = pygame.time.Clock()
+        message_index = 0
+
+        def draw_text_wrapped(surface, text, font, color, rect):
+            words = text.split(' ')
+            lines = []
+            line = ''
+            for word in words:
+                test_line = line + word + ' '
+                if font.size(test_line)[0] <= rect.width:
+                    line = test_line
+                else:
+                    lines.append(line)
+                    line = word + ' '
+            lines.append(line)
+
+            y = rect.top
+            line_height = font.get_linesize()
+            for line in lines:
+                rendered = font.render(line.strip(), True, color)
+                surface.blit(rendered, (rect.left, y))
+                y += line_height
+
+        running = True
+        while running and message_index < len(messages):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if next_rect.collidepoint(event.pos):
+                        message_index += 1
+                        if message_index >= len(messages):
+                            running = False
+
+            self.screen.blit(self.menu_assets['background'], (0, 0))
+            self.screen.blit(nnnn_image, nnnn_rect)
+            if message_index < len(messages):
+                draw_text_wrapped(self.screen, messages[message_index], font, (0, 0, 0), text_area)
+
+            self.screen.blit(next_image, next_rect)
+            pygame.display.update()
+            clock.tick(60)
+
+
 
 
     def run(self):
@@ -418,8 +492,19 @@ class Game:
             if not len(self.enemies):
                 self.transition += 1
                 if self.transition > 30:
-                    self.level = min(self.level + 1, len(os.listdir('data/maps')) - 1)
-                    self.load_level(self.level)
+                    if self.level == 2:  # Si acaba de terminar el nivel 3 (que es índice 2)
+                        self.musicadefondo.stop()
+                        self.npc_outro_dialogue()
+                        self.main_menu()  # o puedes poner un "self.creditos()" si tienes créditos
+                        return
+                    else:
+                        self.level = min(self.level + 1, len(os.listdir('data/maps')) - 1)
+                        self.load_level(self.level)
+
+
+
+                    #self.level = min(self.level + 1, len(os.listdir('data/maps')) - 1)
+                    #self.load_level(self.level)
             if self.transition < 0:
                 self.transition += 1
 
