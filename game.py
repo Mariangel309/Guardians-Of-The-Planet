@@ -144,7 +144,8 @@ class Game:
         self.enemy_icon = pygame.image.load('data/images/ui/enemy_icon.png').convert_alpha()
 
         # Crea el jugador
-        self.player = Player(self, (50,50), (8, 15))
+        self.selected_skin="player"
+        self.player = Player(self, (50,50), (8, 15), skin = self.selected_skin)
         
         # Carga el mapa
         self.tilemap = Tilemap(self, tile_size=16)
@@ -593,13 +594,16 @@ class Game:
                         return
                     if boton_skin_verde.is_clicked(event):
                         self.sonido_boton.play()
-                        skin_seleccionada = 'skin1'
+                        self.selected_skin="skin1"
+                        self.player = Player(self, (50,50), (8, 15),skin = self.selected_skin)
                     if boton_skin_rosado.is_clicked(event):
                         self.sonido_boton.play()
-                        skin_seleccionada = 'skin2'
+                        self.selected_skin="skin2"
+                        self.player = Player(self, (50,50), (8, 15),skin = self.selected_skin)
                     if boton_skin_original.is_clicked(event):
                         self.sonido_boton.play()
-                        skin_seleccionada = 'player'
+                        self.selected_skin="player"
+                        self.player = Player(self, (50,50), (8, 15),skin = self.selected_skin)
 
 
                 pygame.display.update()
