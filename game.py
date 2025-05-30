@@ -50,31 +50,6 @@ class Game:
         self.movement = [False, False] # Inicializa el movimiento del jugador (izquierda y derecha)
 
         # Carga de imágenes y animaciones
-        self.skins = {
-            'player': {
-                'idle': Animation(load_images('entities/player/idle'), img_dur=6),
-                'run': Animation(load_images('entities/player/run'), img_dur=4),
-                'jump': Animation(load_images('entities/player/jump')),
-                'slide': Animation(load_images('entities/player/slide')),
-                'wall_slide': Animation(load_images('entities/player/wall_slide')),
-            },
-
-            'skin1': {
-                'idle': Animation(load_images('entities/skin/skin1/idle'), img_dur=6),
-                'run': Animation(load_images('entities/skin/skin1/run'), img_dur=4),
-                'jump': Animation(load_images('entities/skin/skin1/jump')),
-                'slide': Animation(load_images('entities/skin/skin1/slide')),
-                'wall_slide': Animation(load_images('entities/skin/skin1/wall_slide')),
-            },
-
-            'skin2': {
-                'idle': Animation(load_images('entities/skin/skin2/idle'), img_dur=6),
-                'run': Animation(load_images('entities/skin/skin2/run'), img_dur=4),
-                'jump': Animation(load_images('entities/skin/skin2/jump')),
-                'slide': Animation(load_images('entities/skin/skin2/slide')),
-                'wall_slide': Animation(load_images('entities/skin/skin2/wall_slide')),
-            },
-        }
 
         self.assets = {
             'decor': load_images('tiles/decor'),
@@ -96,21 +71,21 @@ class Game:
             'particle/particle': Animation(load_images('particles/particle'), img_dur=6, loop=False),
             'gun': load_image('gun.png'),
             'projectile': load_image('projectile.png'),
-            'player/idle': self.skins['player']['idle'],
-            'player/run': self.skins['player']['run'],
-            'player/jump': self.skins['player']['jump'],
-            'player/slide': self.skins['player']['slide'],
-            'player/wall_slide': self.skins['player']['wall_slide'],
-            'skin1/idle': self.skins['skin1']['idle'],
-            'skin1/run': self.skins['skin1']['run'],
-            'skin1/jump': self.skins['skin1']['jump'],
-            'skin1/slide': self.skins['skin1']['slide'],
-            'skin1/wall_slide': self.skins['skin1']['wall_slide'],
-            'skin2/idle': self.skins['skin2']['idle'],
-            'skin2/run': self.skins['skin2']['run'],
-            'skin2/jump': self.skins['skin2']['jump'],
-            'skin2/slide': self.skins['skin2']['slide'],
-            'skin2/wall_slide': self.skins['skin2']['wall_slide'],
+            'player/idle':  Animation(load_images('entities/player/idle'), img_dur=6),
+            'player/run': Animation(load_images('entities/player/run'), img_dur=4),
+            'player/jump':  Animation(load_images('entities/player/jump')),
+            'player/slide': Animation(load_images('entities/player/slide')),
+            'player/wall_slide':  Animation(load_images('entities/player/wall_slide')),
+            'skin1/idle':   Animation(load_images('entities/skin/skin1/idle'), img_dur=6),
+            'skin1/run': Animation(load_images('entities/skin/skin1/run'), img_dur=4),
+            'skin1/jump': Animation(load_images('entities/skin/skin1/jump')),
+            'skin1/slide': Animation(load_images('entities/skin/skin1/slide')),
+            'skin1/wall_slide': Animation(load_images('entities/skin/skin1/wall_slide')),
+            'skin2/idle':Animation(load_images('entities/skin/skin2/idle'), img_dur=6),
+            'skin2/run':  Animation(load_images('entities/skin/skin2/run'), img_dur=4),
+            'skin2/jump': Animation(load_images('entities/skin/skin2/jump')),
+            'skin2/slide': Animation(load_images('entities/skin/skin2/slide')),
+            'skin2/wall_slide': Animation(load_images('entities/skin/skin2/wall_slide')),
 
             
         }
@@ -161,7 +136,7 @@ class Game:
         self.clouds = Clouds(self.assets['clouds'], count=16)
 
         # Crea el jugador
-        self.player = Player(self, (50, 50), (8, 15))
+        self.player = Player(self, (50,50), (8, 15))
         
         # Carga el mapa
         self.tilemap = Tilemap(self, tile_size=16)
@@ -602,10 +577,13 @@ class Game:
                         return
                     if boton_skin_verde.is_clicked(event):
                         self.sonido_boton.play()
+                        skin_seleccionada = 'skin1'
                     if boton_skin_rosado.is_clicked(event):
                         self.sonido_boton.play()
+                        skin_seleccionada = 'skin2'
                     if boton_skin_original.is_clicked(event):
                         self.sonido_boton.play()
+                        skin_seleccionada = 'player'
 
 
                 pygame.display.update()
