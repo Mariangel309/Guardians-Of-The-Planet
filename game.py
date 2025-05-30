@@ -86,6 +86,12 @@ class Game:
             'enemy/idle': Animation(load_images('entities/enemy/idle'), img_dur=6),
             'enemy/run': Animation(load_images('entities/enemy/run'), img_dur=4),
             'enemy/hurt': Animation(load_images('entities/enemy/hurt'), img_dur=4, loop=False),
+            'enemy1/idle': Animation(load_images('entities/enemy1/idle'), img_dur=6),
+            'enemy1/run': Animation(load_images('entities/enemy1/run'), img_dur=4),
+            'enemy1/hurt': Animation(load_images('entities/enemy1/hurt'), img_dur=4, loop=False),
+            'enemy2/idle': Animation(load_images('entities/enemy2/idle'), img_dur=6),
+            'enemy2/run': Animation(load_images('entities/enemy2/run'), img_dur=4),
+            'enemy2/hurt': Animation(load_images('entities/enemy2/hurt'), img_dur=4, loop=False),
             'particle/leaf': Animation(load_images('particles/leaf'), img_dur=20, loop=False),
             'particle/particle': Animation(load_images('particles/particle'), img_dur=6, loop=False),
             'gun': load_image('gun.png'),
@@ -193,9 +199,14 @@ class Game:
         self.enemies = []
         enemy_spawners = [s for s in self.tilemap.extract([('spawners', 1)])]
         if self.level == 2:
-            enemy_spawners = enemy_spawners[:5]
+            enemy_spawners = random.sample(enemy_spawners, 5)
+        enemy_type = 'enemy'
+        if self.level == 1:
+            enemy_type = 'enemy1'
+        elif self.level == 2:
+            enemy_type = 'enemy2'
         for spawner in enemy_spawners:
-            self.enemies.append(Enemy(self, spawner['pos'], (8, 15)))
+            self.enemies.append(Enemy(self, spawner['pos'], (8, 15), e_type=enemy_type))
         
         for spawner in self.tilemap.extract([('spawners', 0)]):
             self.player.pos = spawner['pos']

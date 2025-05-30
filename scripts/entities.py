@@ -80,8 +80,8 @@ class PhysicsEntity:
         surf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] - offset[1] + self.anim_offset[1]))
         
 class Enemy(PhysicsEntity):
-    def __init__(self, game, pos, size):
-        super().__init__(game, 'enemy', pos, size)
+    def __init__(self, game, pos, size, e_type='enemy'):
+        super().__init__(game, e_type, pos, size)
         self.walking = 0
         self.hurt_timer = 0  
         self.shoot_cooldown = 0
