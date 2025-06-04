@@ -165,8 +165,8 @@ class Enemy(PhysicsEntity):
 
 
 class Player(PhysicsEntity):
-    def __init__(self, game, pos, size):
-        super().__init__(game, 'player', pos, size)
+    def __init__(self, game, pos, size,skin='player'):
+        super().__init__(game, skin, pos, size)
         self.air_time = 0
         self.jumps = 1
         self.wall_slide = False

@@ -56,6 +56,7 @@ class Game:
         self.movement = [False, False] # Inicializa el movimiento del jugador (izquierda y derecha)
 
         # Carga de imágenes y animaciones
+
         self.assets = {
             'decor': load_images('tiles/decor'),
             'grass': load_images('tiles/grass'),
@@ -72,15 +73,27 @@ class Game:
             'enemy2/idle': Animation(load_images('entities/enemy2/idle'), img_dur=6),
             'enemy2/run': Animation(load_images('entities/enemy2/run'), img_dur=4),
             'enemy2/hurt': Animation(load_images('entities/enemy2/hurt'), img_dur=4, loop=False),
-            'player/idle': Animation(load_images('entities/player/idle'), img_dur=6),
-            'player/run': Animation(load_images('entities/player/run'), img_dur=4),
-            'player/jump': Animation(load_images('entities/player/jump')),
-            'player/slide': Animation(load_images('entities/player/slide')),
-            'player/wall_slide': Animation(load_images('entities/player/wall_slide')),
             'particle/leaf': Animation(load_images('particles/leaf'), img_dur=20, loop=False),
             'particle/particle': Animation(load_images('particles/particle'), img_dur=6, loop=False),
             'gun': load_image('gun.png'),
             'projectile': load_image('projectile.png'),
+            'player/idle':  Animation(load_images('entities/player/idle'), img_dur=6),
+            'player/run': Animation(load_images('entities/player/run'), img_dur=4),
+            'player/jump':  Animation(load_images('entities/player/jump')),
+            'player/slide': Animation(load_images('entities/player/slide')),
+            'player/wall_slide':  Animation(load_images('entities/player/wall_slide')),
+            'skin1/idle':   Animation(load_images('entities/skin/skin1/idle'), img_dur=6),
+            'skin1/run': Animation(load_images('entities/skin/skin1/run'), img_dur=4),
+            'skin1/jump': Animation(load_images('entities/skin/skin1/jump')),
+            'skin1/slide': Animation(load_images('entities/skin/skin1/slide')),
+            'skin1/wall_slide': Animation(load_images('entities/skin/skin1/wall_slide')),
+            'skin2/idle':Animation(load_images('entities/skin/skin2/idle'), img_dur=6),
+            'skin2/run':  Animation(load_images('entities/skin/skin2/run'), img_dur=4),
+            'skin2/jump': Animation(load_images('entities/skin/skin2/jump')),
+            'skin2/slide': Animation(load_images('entities/skin/skin2/slide')),
+            'skin2/wall_slide': Animation(load_images('entities/skin/skin2/wall_slide')),
+
+            
         }
 
         self.level = 0
@@ -131,7 +144,8 @@ class Game:
         self.enemy_icon = pygame.image.load('data/images/ui/enemy_icon.png').convert_alpha()
 
         # Crea el jugador
-        self.player = Player(self, (50, 50), (8, 15))
+        self.selected_skin="player"
+        self.player = Player(self, (50,50), (8, 15), skin = self.selected_skin)
         
         # Carga el mapa
         self.tilemap = Tilemap(self, tile_size=16)
@@ -665,13 +679,16 @@ class Game:
                         return
                     if boton_skin_verde.is_clicked(event):
                         self.sonido_boton.play()
-                        self.skin_seleccionada = 'Ninja_verde'
+                        self.selected_skin="skin1"
+                        self.player = Player(self, (50,50), (8, 15),skin = self.selected_skin)
                     if boton_skin_rosado.is_clicked(event):
                         self.sonido_boton.play()
-                        self.skin_seleccionada = 'Ninja_rosado'
+                        self.selected_skin="skin2"
+                        self.player = Player(self, (50,50), (8, 15),skin = self.selected_skin)
                     if boton_skin_original.is_clicked(event):
                         self.sonido_boton.play()
-                        self.skin_seleccionada = 'player'
+                        self.selected_skin="player"
+                        self.player = Player(self, (50,50), (8, 15),skin = self.selected_skin)
 
 
                 pygame.display.update()
