@@ -24,8 +24,7 @@ class Button:
                 return True
         return False
 
-    def draw(self, surface):
-        pass # Aquí puedes dibujar el botón si lo deseas, pero en este caso no es necesario
+    
 
 # Clase principal del juego
 class Game:
@@ -123,6 +122,7 @@ class Game:
             'volumen_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/volumen.png'), (420, 370)),
             'signo_menos': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/menos.png'), (70, 70)),
             'tienda_titulo': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/Tienda_titulo.png'), (420, 370)),
+            'Creditos_imagen': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/Creditos_imagen.png'), (420, 370)),
             'game_over': pygame.transform.scale(pygame.image.load('data/images/menu_backgrounds/gameover1.png'), (520, 460))
         }
 
@@ -266,8 +266,8 @@ class Game:
                     self.sonido_boton.play()
                     self.tienda_menu()
                 if credits_button.is_clicked(event):
-                    print("Mostrar créditos")
                     self.sonido_boton.play()
+                    self.creditos()
                 if quit_button.is_clicked(event):
                     self.sonido_boton.play()
                     pygame.quit()
@@ -278,6 +278,52 @@ class Game:
 
             pygame.display.update()
             self.clock.tick(60)
+
+    def creditos(self):   
+        volver_img = pygame.transform.scale(pygame.image.load("data/images/menu_backgrounds/volveralmenu.png"), (300, 260))
+        volver = Button(195, 380, 250, 95)
+
+        
+       
+
+        creditos_texto = [
+        "Desarrollado por:",
+        "Maria Angel Martinez Ferrer",
+        "Martin Serrano Trujillo",
+        "Gerhild Michelle Donado Vargas",
+        "Eduardo Andres Ibarra Rivera",
+        "",
+        "Referencias:",
+        "Pixabay = https://pixabay.com/es/",
+        "DaFluffyPotato = https://dafluffypotato.itch.io/",
+        "Poner pantalla de inicio = https://www.youtube.com/watch?v=31TNvxUkFAc",
+        "Poner musica = https://www.youtube.com/watch?v=3Ar305n8Vjs",
+        "Guia para aprender pygame = https://www.youtube.com/watch?v=BUcSWQxY0MI",
+        ]
+
+        while True:
+            self.screen.blit(self.menu_assets['background'], (2, 0))
+            self.screen.blit(self.menu_assets['Creditos_imagen'], (110, -120))
+            self.screen.blit(volver_img, (170, 300))  # Imagen del botón volver
+
+            # Se le declara un valor inicial a Y para que comienza a escribir los textos desde esa posición
+            y = 120
+            for Texto in creditos_texto:
+                texto = self.pixel_font.render(Texto, True, (255, 255, 255))
+                x = (640 - texto.get_width()) // 2
+                self.screen.blit(texto, (x, y))
+                y += 20
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if volver.is_clicked(event):
+                    self.sonido_boton.play()
+                    return
+            
+            pygame.display.update()
+            self.clock.tick(60)           
 
     def configuracion_menu(self):
 
@@ -408,7 +454,8 @@ class Game:
             "¡Felicidades, guardián!",
             "Has salvado el planeta de la amenaza.",
             "Tu valentía será recordada por siempre.",
-            "Ahora que has salvado el mundo virtual...¿salvas el mundo real?"
+            "Ahora que has salvado el mundo virtual...",
+            "¿Podras salvas el mundo real?"
         ]
 
         try:
